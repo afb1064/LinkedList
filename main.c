@@ -29,29 +29,28 @@ int main(){
 	scanf("%d",&secim);
 	system("CLS");
 
-	 switch(secim){
+	 switch(secim)
+	 {
 
 		case 1:
-
-		yeni=(Liste*)malloc(sizeof(Liste));
+	        yeni=(Liste*)malloc(sizeof(Liste));
 
 		puts("Isim Gir\n");
-	    scanf("%s",&yeni->isim);
+	        scanf("%s",&yeni->isim);
 
-	    puts("Soyisim Gir");
-	    scanf("%s",&yeni->soyisim);
+	        puts("Soyisim Gir");
+	        scanf("%s",&yeni->soyisim);
 
-	    puts("Tel No");
-	    scanf("%s",&yeni->numara);
+	        puts("Tel No");
+	        scanf("%s",&yeni->numara);
 
-	    puts("Yas");
-	    scanf("%d",&yeni->yas);
+	        puts("Yas");
+	        scanf("%d",&yeni->yas);
 
 		yeni->sonraki=NULL;
-	    ekle(yeni);
-	    getch();
-
-		break;
+	        ekle(yeni);
+	        getch();
+	        break;
 
 		case 2:
 		bastir();
@@ -70,15 +69,15 @@ int main(){
 		fp=fopen("Liste.txt","w");
 		dosyayaYaz();
 		fclose(fp);
-	    getch();
-	    break;
+	        getch();
+	        break;
 
 		case 5:
 		fc=fopen("Liste.txt","r");
-	    dosyadanOku();
-	    fclose(fc);
-	    getch();
-	    break;
+	        dosyadanOku();
+	        fclose(fc);
+	        getch();
+	        break;
 	}
       system("CLS");
  }
@@ -88,13 +87,13 @@ void ekle(Liste*yeni)
 {
 	if(ilk==NULL)
 	{
-		ilk=yeni;
-		son=yeni;
+	ilk=yeni;
+	son=yeni;
 	}
 	else
 	{
-		son->sonraki=yeni;
-		son=son->sonraki;
+	son->sonraki=yeni;
+	son=son->sonraki;
 	}
 }
 
@@ -110,19 +109,20 @@ void bastir()
 	printf("Numara: %s\n",gecici->numara);
 	printf("Yas: %d\n",gecici->yas);
 	printf("\n");
-    gecici=gecici->sonraki;
+        gecici=gecici->sonraki;
 
     }
 }
-void sil(int indis){
+void sil(int indis)
+{
 	int i=0;
 	gecici=ilk;
 
 	while(gecici!=NULL)
 	{
-	 gecici=gecici->sonraki;
-	 i++;
-    }
+	gecici=gecici->sonraki;
+	i++;
+        }
 
 	printf("%d",i);
 
@@ -133,14 +133,14 @@ void sil(int indis){
     	free(gecici);
 	}
 
-    if(indis==i)
-    {
+        if(indis==i)
+        {
 	gecici=ilk;
 
 	for(int j=0;j<(i-2);j++)
-	   {
-       gecici=gecici->sonraki;
-	   }
+	{
+        gecici=gecici->sonraki;
+	}
 
        temp=gecici->sonraki;
        son=gecici;
