@@ -1,81 +1,105 @@
+////Linked List Practices and Some Functions
+//Author afb1064
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
-typedef struct liste{
-	char isim[20];
-	char soyisim[20];
-	char numara[11];
-	int yas;
-	liste*sonraki;
-}Liste;
-Liste *ilk=NULL,*son=NULL,*yeni,*gecici,*temp;
+typedef struct list{
+	char name[20];
+	char surname[20];
+	char number[11];
+	int age;
+	list*next;
+}List;
+List *first=NULL,*last=NULL,*newp,*temp,*iter;
 
- void ekle(Liste*);
- void bastir();
- void sil(int);
- void dosyayaYaz();
- void dosyadanOku();
+ void add(List*);
+ void print();
+ void del(int);
+ void writeFile();
+ void readFile();
 
  FILE *fp;
  FILE *fc;
 
 int main(){
 
-  int secim=0;
+     int choice=0;
 
-   while(secim!=6){
-	puts("1-EKLE\n2-LISTELE\n3-SIL\n4-DOSYAYA YAZ\n5-DOSYADAN EKLE\n6-CIKIS");
+         while(choice!=6)
+	 {
+	 puts("1-ADD\n2-LIST\n3-DELETE\n4-WRITE TO FIKE\n5-ADD FROM FILE\n6-EXIT");
 
-	scanf("%d",&secim);
-	system("CLS");
+	 scanf("%d",&choice);
+	 system("CLS");
 
-	 switch(secim)
+	 switch(choice)
 	 {
 
 		case 1:
-	        yeni=(Liste*)malloc(sizeof(Liste));
+	        newp=(List*)malloc(sizeof(List));
 
-		puts("Isim Gir\n");
-	        scanf("%s",&yeni->isim);
+		puts("Please Enter The Name:\n");
+	        scanf("%s",&newp->name);
 
-	        puts("Soyisim Gir");
-	        scanf("%s",&yeni->soyisim);
+	        puts("Please Enter The Surname");
+	        scanf("%s",&newp->surname);
 
-	        puts("Tel No");
-	        scanf("%s",&yeni->numara);
+	        puts("Plase Enter The Phone Number");
+	        scanf("%s",&newp->number);
 
-	        puts("Yas");
-	        scanf("%d",&yeni->yas);
+	        puts("Please Enter The Age");
+	        scanf("%d",&newp->age);
 
-		yeni->sonraki=NULL;
-	        ekle(yeni);
-	        getch();
+		newp->next=NULL;
+	        add(newp);
+	        puts("Press any key for go back...\n");
+                getch();
 	        break;
 
 		case 2:
-		bastir();
-		getch();
+		print();
+		puts("Press any key for go back...\n");
+                getch();
 		break;
 
 		case 3:
-		int no;
-		puts("Silinecek Indis Numarasini Giriniz");
-		scanf("%d",&no);
-		sil(no);
+		int num;
+		puts("Please Enter The Record Number for Delete");
+		scanf("%d",&num);
+		del(num);
+		puts("Press any key for go back...\n");
 		getch();
 		break;
 
 		case 4:
-		fp=fopen("Liste.txt","w");
-		dosyayaYaz();
+		fp=fopen("List.txt","w");
+		writeFile();
 		fclose(fp);
+		puts("Records successfully written. Press any key for go back...\n");
 	        getch();
 	        break;
 
 		case 5:
-		fc=fopen("Liste.txt","r");
-	        dosyadanOku();
+		fc=fopen("List.txt","r");
+		if(fc!=NULL)
+		{
+                readFile();
 	        fclose(fc);
+	        puts("Records successfully added. Press any key for go back...\n");
+                }
+                else
+		{
+                puts("There is no file, please create one.");	
+		}
+		getch();
+	        break;
+	    
+	        case 6:
+	        puts("Goodbye");
+	        return 0;
+	    
+	        default:
+	        puts("Wrong choice, press any key for go back... ");
 	        getch();
 	        break;
 	}
@@ -83,103 +107,108 @@ int main(){
  }
  return 0;
 }
-void ekle(Liste*yeni)
+void add(List*newp)
 {
-	if(ilk==NULL)
+	if(first==NULL)
 	{
-	ilk=yeni;
-	son=yeni;
+	first=newp;
+	last=newp;
 	}
 	else
 	{
-	son->sonraki=yeni;
-	son=son->sonraki;
+	last->next=newp;
+	last=last->next;
 	}
 }
 
-void bastir()
+void print()
 {
-	gecici=ilk;
-
-    while(gecici!=NULL)
+    temp=first;
+    if(temp!=NULL)
     {
 
-	printf("Isim: %s\n",gecici->isim);
-	printf("Soyisim: %s\n",gecici->soyisim);
-	printf("Numara: %s\n",gecici->numara);
-	printf("Yas: %d\n",gecici->yas);
+    while(temp!=NULL)
+{
+
+	printf("Name: %s\n",temp->name);
+	printf("Surname: %s\n",temp->surname);
+	printf("Phone Number: %s\n",temp->number);
+	printf("Age: %d\n",temp->age);
 	printf("\n");
-        gecici=gecici->sonraki;
+        temp=temp->next;
 
     }
 }
-void sil(int indis)
+    else
+     {
+	puts("There is nothing to list");
+    }
+}
+void del(int number)
 {
 	int i=0;
-	gecici=ilk;
+	temp=first;
 
-	while(gecici!=NULL)
+	while(temp!=NULL)
 	{
-	gecici=gecici->sonraki;
+	temp=temp->next;
 	i++;
         }
 
-	printf("%d",i);
-
-	if(indis==1)
+	if(number==1)
 	{
-    	gecici=ilk;
-    	ilk=ilk->sonraki;
-    	free(gecici);
+    	temp=first;
+    	first=first->next;
+    	free(temp);
 	}
 
-        if(indis==i)
-        {
-	gecici=ilk;
+    else if(number==i)
+    {
+	temp=first;
 
 	for(int j=0;j<(i-2);j++)
 	{
-        gecici=gecici->sonraki;
+        temp=temp->next;
 	}
 
-       temp=gecici->sonraki;
-       son=gecici;
-       son->sonraki=NULL;
-       free(temp);
+       iter=temp->next;
+       last=temp;
+       last->next=NULL;
+       free(iter);
     }
 
-    else{
-    gecici=ilk;
+    else {
+    temp=first;
 
-	for(int s=0;s<(indis-2);s++)
-    {
-    gecici=gecici->sonraki;
+	for(int s=0;s<(number-2);s++)
+        {
+        temp=temp->next;
 	}
 
-	temp=gecici->sonraki;
-	gecici->sonraki=temp->sonraki;
-	free(temp);
+	iter=temp->next;
+	temp->next=iter->next;
+	free(iter);
 	}
 
 }
 
-void dosyayaYaz(){
+void writeFile(){
 
-  gecici=ilk;
-  while(gecici!=NULL)
+  temp=first;
+  while(temp!=NULL)
   {
-	fprintf(fp,"%s\t%s\t%s\t%d\n",gecici->isim,gecici->soyisim,gecici->numara,gecici->yas);
-    gecici=gecici->sonraki;
+    fprintf(fp,"%s\t%s\t%s\t%d\n",temp->name,temp->surname,temp->number,temp->age);
+    temp=temp->next;
   }
 }
 
-void dosyadanOku(){
+void readFile(){
 
   while(!feof(fc))
     {
-	yeni=(Liste*)malloc(sizeof(Liste));
-	fscanf(fc,"%s\t%s\t%s\t%d\n",&yeni->isim,&yeni->soyisim,&yeni->numara,&yeni->yas);
-	yeni->sonraki=NULL;
-    ekle(yeni);
-	}
+    newp=(List*)malloc(sizeof(List));
+    fscanf(fc,"%s\t%s\t%s\t%d\n",&newp->name,&newp->surname,&newp->number,&newp->age);
+    newp->next=NULL;
+    add(newp);
+    }
 }
